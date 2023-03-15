@@ -14,36 +14,80 @@ class Notifier
 {
     const WEBHOOKS = 'https://chat.googleapis.com/v1/spaces/{{spaceId}}/messages?key={{key}}&token={{token}}';
 
+    protected $config;
     protected $spaceId;
     protected $key;
+    protected $threadKey;
     protected $token;
     protected $message;
     protected $textResponse;
+    protected $card;
 
-    public function setSpaceId($spaceId)
+    public function uuid(): string
+    {
+        return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+                       mt_rand(0, 0xffff), // 32 bits for "time_low"
+                       mt_rand(0, 0xffff), // 16 bits for "time_mid"
+                       mt_rand(0, 0xffff), // 16 bits for "time_hi_and_version",
+
+            // four most significant bits holds version number 4
+                       mt_rand(0, 0x0fff) | 0x4000, // 16 bits, 8 bits for "clk_seq_hi_res",
+
+            // 8 bits for "clk_seq_low",
+
+            // two most significant bits holds zero and one for variant DCE1.1
+                       mt_rand(0, 0x3fff) | 0x8000, // 48 bits for "node"
+                       mt_rand(0, 0xffff),
+                       mt_rand(0, 0xffff),
+                       mt_rand(0, 0xffff)
+        );
+    }
+
+    public function setConfig($config): self
+    {
+        $this->config = $config;
+
+        return $this;
+    }
+
+    public function setSpaceId($spaceId): self
     {
         $this->spaceId = $spaceId;
 
         return $this;
     }
 
-    public function setKey($key)
+    public function setKey($key): self
     {
         $this->key = $key;
 
         return $this;
     }
 
-    public function setToken($token)
+    public function setToken($token): self
     {
         $this->token = $token;
 
         return $this;
     }
 
-    public function setMessage($message)
+    public function setThreadKey($threadKey): self
+    {
+        $this->threadKey = $threadKey;
+
+        return $this;
+    }
+
+    public function setMessage($message): self
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function setCard($card): self
+    {
+        $this->card = $card;
 
         return $this;
     }
@@ -53,7 +97,17 @@ class Notifier
         return $this->textResponse;
     }
 
-    public function send()
+    /**
+     * Function sendTextMessage
+     *
+     * @return bool
+     * @author   : 713uk13m <dev@nguyenanhung.com>
+     * @copyright: 713uk13m <dev@nguyenanhung.com>
+     * @time     : 15/03/2023 35:53
+     *
+     * @see      https://developers.google.com/chat/api/guides/message-formats/text
+     */
+    public function sendTextMessage(): bool
     {
         $webhook = self::WEBHOOKS;
         $webhook = str_replace(
@@ -61,23 +115,124 @@ class Notifier
             array($this->spaceId, $this->key, $this->token),
             $webhook
         );
+        if (!empty($this->threadKey)) {
+            $webhook .= '&threadKey=' . urlencode($this->threadKey);
+        }
         $params = array(
             'text' => $this->message
         );
         $request = Request::execute($webhook, $params);
         if ($request === false) {
-            $this->textResponse = 'Send Message ' . $this->message . ' to is FAILED';
+            $this->textResponse = 'Send Message ' . $this->message . ' is ERROR';
 
             return false;
         }
         $response = json_decode($request, false);
         if (isset($response->error)) {
-            $this->textResponse = 'Send Message ' . $this->message . ' to is FAILED';
+            $this->textResponse = 'Send Message ' . $this->message . ' is FAILED';
 
             return false;
         }
         $this->textResponse = $response->sender->displayName . ' Send Message ' . $response->text . ' to Space ' . $response->space->displayName . ' is SUCCESS';
 
         return true;
+    }
+
+    /**
+     * Function sendCardMessage
+     *
+     * @return bool
+     * @author   : 713uk13m <dev@nguyenanhung.com>
+     * @copyright: 713uk13m <dev@nguyenanhung.com>
+     * @time     : 15/03/2023 35:42
+     *
+     * @see      https://developers.google.com/chat/api/guides/message-formats/cards
+     * @see      https://developers.google.com/chat/ui/read-form-data
+     * @see      https://developers.google.com/chat/ui/widgets/card-header
+     */
+    public function sendCardMessage(): bool
+    {
+        $webhook = self::WEBHOOKS;
+        $webhook = str_replace(
+            array('{{spaceId}}', '{{key}}', '{{token}}'),
+            array($this->spaceId, $this->key, $this->token),
+            $webhook
+        );
+        if (!empty($this->threadKey)) {
+            $webhook .= '&threadKey=' . urlencode($this->threadKey);
+        }
+        $cardParams = array(
+            'cardsV2' => array(
+                'cardId' => date('YmdHis') . '-' . $this->uuid(),
+                'card'   => $this->card
+            )
+        );
+        $request = Request::execute($webhook, $cardParams);
+        if ($request === false) {
+            $this->textResponse = 'Send Message is ERROR';
+
+            return false;
+        }
+        $response = json_decode($request, false);
+        if (isset($response->error)) {
+            $this->textResponse = 'Send Message to is FAILED';
+
+            return false;
+        }
+        $this->textResponse = $response->sender->displayName . ' Send Message to Space ' . $response->space->displayName . ' is SUCCESS';
+
+        return true;
+    }
+
+    public function buildCardExample(): array
+    {
+        return array(
+            'header'   => array(
+                'title'        => ' Test',
+                'subtitle'     => 'Google Chat Test',
+                'imageUrl'     => 'https://developers.google.com/chat/images/quickstart-app-avatar.png',
+                'imageType'    => 'CIRCLE',
+                'imageAltText' => 'Avatar'
+            ),
+            'sections' => array(
+                array(
+                    'header'                    => 'Contact Info',
+                    'collapsible'               => true,
+                    'uncollapsibleWidgetsCount' => 1,
+                    'widgets'                   => array(
+                        array(
+                            'decoratedText' => array(
+                                'startIcon' => array(
+                                    'knownIcon' => "EMAIL"
+                                ),
+                                'text'      => 'dev@nguyenanhung.com'
+                            )
+                        ),
+                        array(
+                            'decoratedText' => array(
+                                'startIcon' => array(
+                                    'knownIcon' => "EMAIL"
+                                ),
+                                'text'      => 'dev@nguyenanhung.com'
+                            )
+                        ),
+                        array(
+                            'buttonList' => array(
+                                'buttons' => array(
+                                    array(
+                                        'text'    => 'Share 2',
+                                        'onClick' => array(
+                                            'openLink' => array(
+                                                'url' => 'abc'
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                )
+            )
+        );
     }
 }

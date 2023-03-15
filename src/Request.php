@@ -24,11 +24,18 @@ class Request
      * @copyright: 713uk13m <dev@nguyenanhung.com>
      * @time     : 04/01/2021 00:35
      */
-    public static function execute($url = '', $params = array(), $timeout = 30)
+    public static function execute(string $url = '', array $params = array(), int $timeout = 30)
     {
         $endpoint = trim($url);
         $data = json_encode($params);
         $curl = curl_init();
+        if (defined('CURL_SSLVERSION_TLSv1_2')) {
+            $sslVersion = CURL_SSLVERSION_TLSv1_2;
+        } elseif (defined('CURL_SSLVERSION_TLSv1_1')) {
+            $sslVersion = CURL_SSLVERSION_TLSv1_1;
+        } else {
+            $sslVersion = CURL_SSLVERSION_TLSv1;
+        }
         curl_setopt_array($curl, array(
             CURLOPT_URL            => $endpoint,
             CURLOPT_RETURNTRANSFER => true,
@@ -36,7 +43,7 @@ class Request
             CURLOPT_MAXREDIRS      => 10,
             CURLOPT_TIMEOUT        => $timeout,
             CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_SSLVERSION     => CURL_SSLVERSION_TLSv1_2,
+            CURLOPT_SSLVERSION     => $sslVersion,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $data,
             CURLOPT_HTTPHEADER     => array(
