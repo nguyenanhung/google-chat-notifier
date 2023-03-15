@@ -184,7 +184,7 @@ class Notifier
     {
         return array(
             'header'   => array(
-                'title'        => 'Beetsoft Test',
+                'title'        => 'Test',
                 'subtitle'     => 'Google Chat Test',
                 'imageUrl'     => 'https://developers.google.com/chat/images/quickstart-app-avatar.png',
                 'imageType'    => 'CIRCLE',
@@ -201,7 +201,7 @@ class Notifier
                                 'startIcon' => array(
                                     'knownIcon' => "EMAIL"
                                 ),
-                                'text'      => 'contact@beetsoft.com.vn'
+                                'text'      => 'dev@nguyenanhung.com'
                             )
                         ),
                         array(
@@ -209,7 +209,7 @@ class Notifier
                                 'startIcon' => array(
                                     'knownIcon' => "EMAIL"
                                 ),
-                                'text'      => 'hungna@beetsoft.com.vn'
+                                'text'      => 'dev@nguyenanhung.com'
                             )
                         ),
                         array(
