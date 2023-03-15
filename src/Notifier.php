@@ -14,11 +14,20 @@ class Notifier
 {
     const WEBHOOKS = 'https://chat.googleapis.com/v1/spaces/{{spaceId}}/messages?key={{key}}&token={{token}}';
 
+    protected $config;
     protected $spaceId;
     protected $key;
+    protected $threadKey;
     protected $token;
     protected $message;
     protected $textResponse;
+
+    public function setConfig($config)
+    {
+        $this->config = $config;
+
+        return $this;
+    }
 
     public function setSpaceId($spaceId)
     {
@@ -41,6 +50,13 @@ class Notifier
         return $this;
     }
 
+    public function setThreadKey($threadKey)
+    {
+        $this->threadKey = $threadKey;
+
+        return $this;
+    }
+
     public function setMessage($message)
     {
         $this->message = $message;
@@ -53,7 +69,7 @@ class Notifier
         return $this->textResponse;
     }
 
-    public function send()
+    public function send_text_message()
     {
         $webhook = self::WEBHOOKS;
         $webhook = str_replace(
@@ -61,6 +77,9 @@ class Notifier
             array($this->spaceId, $this->key, $this->token),
             $webhook
         );
+        if (!empty($this->threadKey)) {
+            $webhook .= '&threadKey=' . urlencode($this->threadKey);
+        }
         $params = array(
             'text' => $this->message
         );
@@ -80,4 +99,6 @@ class Notifier
 
         return true;
     }
+
+
 }

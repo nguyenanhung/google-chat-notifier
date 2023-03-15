@@ -5,6 +5,7 @@ if (!function_exists('simple_google_chat_notifier')) {
         $spaceId = isset($config['spaceId']) ? $config['spaceId'] : null;
         $key = isset($config['key']) ? $config['key'] : null;
         $token = isset($config['token']) ? $config['token'] : null;
+        $threadKey = isset($config['threadKey']) ? $config['threadKey'] : null;
         if ($spaceId === null || $key === null || $token === null) {
             return false;
         }
@@ -13,8 +14,9 @@ if (!function_exists('simple_google_chat_notifier')) {
         $notifier->setSpaceId($spaceId)
                  ->setKey($key)
                  ->setToken($token)
+                 ->setThreadKey($threadKey)
                  ->setMessage($message);
 
-        return $notifier->send();
+        return $notifier->send_text_message();
     }
 }
