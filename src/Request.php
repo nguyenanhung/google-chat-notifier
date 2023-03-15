@@ -24,7 +24,7 @@ class Request
      * @copyright: 713uk13m <dev@nguyenanhung.com>
      * @time     : 04/01/2021 00:35
      */
-    public static function execute($url = '', $params = array(), $timeout = 30)
+    public static function execute(string $url = '', array $params = array(), int $timeout = 30)
     {
         $endpoint = trim($url);
         $data = json_encode($params);
