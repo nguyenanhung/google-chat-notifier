@@ -2,6 +2,16 @@
 
 # Send Notifier with Google Chat
 
+## List Featured
+
+- [x] Send Simple Message with Google Chat
+- [ ] Send Card Message with Google Chat
+
+## Version
+
+- [x] V1.x support all PHP version `>=5.4`
+- [x] V2.x support all PHP version `>=7.0`
+
 ## Contact & Support
 
 If any question & request, please contact following information
