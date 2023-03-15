@@ -1,14 +1,16 @@
 {
     "type": "library",
-    "name": "nguyenanhung/template-php-lib",
-    "description": "Template for repository helper, library - Basic, Simple and Lightweight",
+    "name": "nguyenanhung/google-chat-notifier",
+    "description": "Google Chat Notifier - Basic, Simple and Lightweight",
     "keywords": [
-        "template",
+        "notify",
+        "notifier",
+        "google chat",
         "helper",
         "library",
         "php"
     ],
-    "homepage": "https://github.com/nguyenanhung/template-php-lib",
+    "homepage": "https://github.com/nguyenanhung/google-chat-notifier",
     "license": "MIT",
     "minimum-stability": "stable",
     "authors": [
@@ -20,11 +22,13 @@
         }
     ],
     "require": {
-        "php": ">=5.6"
+        "php": ">=5.4",
+        "ext-curl": "*",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {
-            "nguyenanhung\\Libraries\\TemplateREPLACE\\": "src/"
+            "nguyenanhung\\Platform\\Notification\\GoogleChat\\": "src/"
         },
         "files": [
             "helpers/helpers.php"
