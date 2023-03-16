@@ -5,7 +5,7 @@
 ## List Featured
 
 - [x] Send Simple Message with Google Chat
-- [ ] Send Card Message with Google Chat
+- [x] Send Card Message with Google Chat
 
 ## Version
 
