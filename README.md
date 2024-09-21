@@ -1,4 +1,9 @@
-[![Latest Stable Version](http://poser.pugx.org/nguyenanhung/google-chat-notifier/v)](https://packagist.org/packages/nguyenanhung/google-chat-notifier) [![Total Downloads](http://poser.pugx.org/nguyenanhung/google-chat-notifier/downloads)](https://packagist.org/packages/nguyenanhung/google-chat-notifier) [![Latest Unstable Version](http://poser.pugx.org/nguyenanhung/google-chat-notifier/v/unstable)](https://packagist.org/packages/nguyenanhung/google-chat-notifier) [![License](http://poser.pugx.org/nguyenanhung/google-chat-notifier/license)](https://packagist.org/packages/nguyenanhung/google-chat-notifier) [![PHP Version Require](http://poser.pugx.org/nguyenanhung/google-chat-notifier/require/php)](https://packagist.org/packages/nguyenanhung/google-chat-notifier)
+[![Latest Stable Version](https://img.shields.io/packagist/v/nguyenanhung/google-chat-notifier.svg?style=flat-square)](https://packagist.org/packages/nguyenanhung/google-chat-notifier)
+[![Total Downloads](https://img.shields.io/packagist/dt/nguyenanhung/google-chat-notifier.svg?style=flat-square)](https://packagist.org/packages/nguyenanhung/google-chat-notifier)
+[![Daily Downloads](https://img.shields.io/packagist/dd/nguyenanhung/google-chat-notifier.svg?style=flat-square)](https://packagist.org/packages/nguyenanhung/google-chat-notifier)
+[![Monthly Downloads](https://img.shields.io/packagist/dm/nguyenanhung/google-chat-notifier.svg?style=flat-square)](https://packagist.org/packages/nguyenanhung/google-chat-notifier)
+[![License](https://img.shields.io/packagist/l/nguyenanhung/google-chat-notifier.svg?style=flat-square)](https://packagist.org/packages/nguyenanhung/google-chat-notifier)
+[![PHP Version Require](https://img.shields.io/packagist/dependency-v/nguyenanhung/google-chat-notifier/php)](https://packagist.org/packages/nguyenanhung/google-chat-notifier)
 
 # Send Notifier with Google Chat
 
