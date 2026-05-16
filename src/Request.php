@@ -15,9 +15,9 @@ class Request
     /**
      * Function sendRequest - Hàm request tới Endpoint sử dụng phương thức GET, thư viện cURL với TLS v1.2
      *
-     * @param string $url     URL Endpoint cần gọi
-     * @param array  $params  Data Params cần truyền dữ liệu
-     * @param int    $timeout Thời gian chờ phản hồi dữ liệu tối đa
+     * @param string $url URL Endpoint cần gọi
+     * @param array $params Data Params cần truyền dữ liệu
+     * @param int $timeout Thời gian chờ phản hồi dữ liệu tối đa
      *
      * @return bool|string
      * @author   : 713uk13m <dev@nguyenanhung.com>
@@ -37,16 +37,16 @@ class Request
             $sslVersion = CURL_SSLVERSION_TLSv1;
         }
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => $endpoint,
+            CURLOPT_URL => $endpoint,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING       => "",
-            CURLOPT_MAXREDIRS      => 10,
-            CURLOPT_TIMEOUT        => $timeout,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => $timeout,
             CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_SSLVERSION     => $sslVersion,
-            CURLOPT_CUSTOMREQUEST  => "POST",
-            CURLOPT_POSTFIELDS     => $data,
-            CURLOPT_HTTPHEADER     => array(
+            CURLOPT_SSLVERSION => $sslVersion,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => $data,
+            CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json'
             ),
         ));
@@ -57,7 +57,9 @@ class Request
             return false;
         }
 
-        curl_close($curl);
+        if (PHP_VERSION_ID < 80000) {
+            curl_close($curl);
+        }
 
         return $result;
     }
